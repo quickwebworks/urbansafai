@@ -1,0 +1,51 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Booking {
+  id            String   @id @default(cuid())
+  name          String
+  phone         String
+  email         String?
+  services      String   @db.Text
+  date          String
+  time          String
+  address       String   @db.Text
+  message       String?  @db.Text
+  totalPrice    String
+  status        String   @default("pending")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ContactSubmission {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  phone         String?
+  subject       String
+  message       String   @db.Text
+  isRead        Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
+
+model Review {
+  id            String   @id @default(cuid())
+  name          String
+  rating        Int      @db.Int
+  comment       String   @db.Text
+  service       String?
+  isApproved    Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
+
+model NewsletterSubscriber {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  createdAt     DateTime @default(now())
+}
