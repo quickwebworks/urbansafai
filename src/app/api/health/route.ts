@@ -20,7 +20,7 @@ export async function GET() {
     checks,
     missing,
     hint: missing.length > 0
-      ? `Set these in Hostinger: ${missing.join(', ')}`
+      ? `Set these (Supabase dashboard / Hostinger env): ${missing.join(', ')}`
       : 'All configured correctly',
   })
 }

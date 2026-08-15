@@ -123,10 +123,10 @@ function fireEmails(payload: Parameters<typeof buildAdminHtml>[0] & { email: str
   }, 0)
 }
 
-// ─── Detect missing MySQL table ────────────────────────────────────────────
+// ─── Detect missing table ─────────────────────────────────────────────────
 
 function isTableMissing(msg: string): boolean {
-  return /Table '[^']+' doesn't exist|no such table|Table.*unknown/i.test(msg)
+  return /relation "[^"]+" does not exist|Table '[^']+' doesn't exist|no such table|does not exist/i.test(msg)
 }
 
 // ─── POST: Create booking (public) ───────────────────────────────────────

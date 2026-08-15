@@ -12,7 +12,7 @@ const schema = z.object({
 })
 
 function isTableMissing(msg: string): boolean {
-  return /Table '[^']+' doesn't exist|no such table|Table.*unknown/i.test(msg)
+  return /relation "[^"]+" does not exist|Table '[^']+' doesn't exist|no such table|does not exist/i.test(msg)
 }
 
 export async function POST(request: NextRequest) {

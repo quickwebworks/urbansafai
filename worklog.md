@@ -20,3 +20,26 @@ Stage Summary:
 - Key files modified: server.js, next.config.ts, package.json, .env
 - Key file deleted: src/middleware.ts (was causing crash)
 - Ready to push to GitHub for Hostinger deployment
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Migrate Database from MySQL (Hostinger) to Supabase (PostgreSQL)
+
+Work Log:
+- Changed Prisma schema provider from `mysql` to `postgresql`
+- Added `directUrl` env var support (needed for Supabase connection pooling)
+- Removed `@db.Int` annotation (PostgreSQL uses native INT type)
+- Rewrote `/api/setup` route: replaced `mysql2/promise` direct SQL with Prisma `$queryRawUnsafe` + PostgreSQL CREATE TABLE IF NOT EXISTS syntax
+- Updated `package.json`: removed `mysql2` dependency, changed dummy DATABASE_URL from `mysql://localhost:3306/dummy` to `postgresql://localhost:5432/dummy` in build/postinstall scripts
+- Updated `.env.example`: replaced MySQL Hostinger connection string with Supabase PostgreSQL format (both pooled `DATABASE_URL` and direct `DIRECT_URL`)
+- Updated error detection regexes in bookings, contact, and reviews routes to catch PostgreSQL `relation "..." does not exist` errors
+- Updated health route hint text to mention Supabase
+- Cleaned up remaining MySQL references in code comments
+- Verified: `prisma generate` succeeds, dev server starts and returns HTTP 200, `/api/health` shows DATABASE_URL is set, all routes compile without errors
+
+Stage Summary:
+- Database fully migrated from MySQL to Supabase (PostgreSQL)
+- mysql2 package removed from dependencies
+- User needs to: (1) Create Supabase project, (2) Get connection strings, (3) Set DATABASE_URL and DIRECT_URL in Hostinger env vars, (4) Visit /api/setup to create tables
+- All code changes are backwards-compatible (error regexes match both PG and MySQL patterns)

@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
     console.error('[Reviews POST]', msg)
-    if (/Table.*doesn't exist|no such table/i.test(msg)) {
+    if (/relation "[^"]+" does not exist|Table.*doesn't exist|no such table|does not exist/i.test(msg)) {
       return NextResponse.json({ success: false, error: 'Database not initialized. Visit /api/setup first.' }, { status: 503 })
     }
     return NextResponse.json({ success: false, error: 'Something went wrong.' }, { status: 500 })

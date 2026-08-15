@@ -1,6 +1,7 @@
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -37,7 +38,7 @@ model ContactSubmission {
 model Review {
   id            String   @id @default(cuid())
   name          String
-  rating        Int      @db.Int
+  rating        Int
   comment       String   @db.Text
   service       String?
   isApproved    Boolean  @default(false)
