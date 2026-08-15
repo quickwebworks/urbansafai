@@ -57,7 +57,7 @@ ${phone ? `<div class="label">Phone</div><div class="value">${phone.replace(/</g
 <div class="label">Subject</div><div class="value">${subject.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
 <div class="label">Message</div><div class="value" style="white-space:pre-wrap">${message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
 </div>
-<div class="f">Urban Safai · admin@urbansafai.in · 072789 22229</div>
+<div class="f">Urban Safai · admin@urbansafai.in · +91 72789 22229</div>
 </div></body></html>`,
           })
           console.log('[Contact Email] Sent for', subject)

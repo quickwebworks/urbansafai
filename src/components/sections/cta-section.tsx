@@ -83,7 +83,7 @@ export default function CTASection() {
             </Button>
 
             <a
-              href={`tel:${COMPANY_PHONE.replace(/\s/g, '')}`}
+              href={`tel:+91${COMPANY_PHONE.replace(/\s/g, '')}`}
               className="inline-flex items-center gap-2 text-base font-semibold text-white transition-colors hover:text-emerald-200"
             >
               <Phone className="size-5" />

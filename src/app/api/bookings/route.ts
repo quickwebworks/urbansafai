@@ -56,7 +56,7 @@ th:nth-child(3),th:nth-child(4){text-align:right}
 <div class="dg"><div class="di"><div class="l">Name</div><div class="v">${esc(d.name)}</div></div><div class="di"><div class="l">Phone</div><div class="v">${esc(d.phone)}</div></div><div class="di"><div class="l">Email</div><div class="v">${esc(d.email)}</div></div><div class="di"><div class="l">Date & Time</div><div class="v">${esc(d.date)}, ${esc(d.time)}</div></div></div>
 <div class="di" style="margin-top:8px"><div class="l">Address</div><div class="v">${esc(d.address)}</div></div>
 ${d.message ? `<div class="di" style="margin-top:8px"><div class="l">Message</div><div class="v">${esc(d.message)}</div></div>` : ''}
-</div><div class="f">Urban Safai — Reliable, Daily Cleaning – Right to Your Door!<br/>Ludhiana, Punjab, India · admin@urbansafai.in · 072789 22229</div>
+</div><div class="f">Urban Safai — Reliable, Daily Cleaning – Right to Your Door!<br/>Ludhiana, Punjab, India · admin@urbansafai.in · +91 72789 22229</div>
 </div></body></html>`
 }
 
@@ -86,9 +86,9 @@ th{background:#f0fdf4;color:#059669;padding:10px 16px;text-align:left;font-size:
 <table><thead><tr><th>Service</th><th style="text-align:center">Qty</th><th style="text-align:right">Subtotal</th></tr></thead>
 <tbody>${rows}</tbody><tfoot><tr><td colspan="2" style="padding:14px 16px;font-weight:600">Total</td><td class="total">${d.totalPrice}</td></tr></tfoot></table>
 <p><strong>📅 Date:</strong> ${esc(d.date)}&nbsp;&nbsp;<strong>🕐 Time:</strong> ${esc(d.time)}</p>
-<p style="margin-top:16px;color:#6b7280;font-size:14px">Our team will contact you shortly. For queries, call <strong>072789 22229</strong>.</p>
+<p style="margin-top:16px;color:#6b7280;font-size:14px">Our team will contact you shortly. For queries, call <strong>+91 72789 22229</strong>.</p>
 </div>
-<div class="f">Urban Safai · Ludhiana, Punjab, India · <a href="tel:07278922229">072789 22229</a></div>
+<div class="f">Urban Safai · Ludhiana, Punjab, India · <a href="tel:+917278922229">+91 72789 22229</a></div>
 </div></body></html>`
 }
 

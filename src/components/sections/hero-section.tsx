@@ -127,7 +127,7 @@ export default function HeroSection() {
                 className="border-2 border-white/60 bg-transparent font-semibold text-white hover:bg-white/10 hover:text-white h-12 text-base px-6"
                 asChild
               >
-                <a href={`tel:${COMPANY_PHONE.replace(/\s/g, '')}`}>
+                <a href={`tel:+91${COMPANY_PHONE.replace(/\s/g, '')}`}>
                   <Phone className="mr-2 size-4" />
                   Call: {COMPANY_PHONE}
                 </a>

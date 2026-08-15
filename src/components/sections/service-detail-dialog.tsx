@@ -199,7 +199,7 @@ export default function ServiceDetailDialog({
               className="w-full border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-200 font-semibold h-11"
               asChild
             >
-              <a href={`tel:${COMPANY_PHONE.replace(/\s/g, '')}`}>
+              <a href={`tel:+91${COMPANY_PHONE.replace(/\s/g, '')}`}>
                 <Phone className="size-4" />
                 Call Us: {COMPANY_PHONE}
               </a>

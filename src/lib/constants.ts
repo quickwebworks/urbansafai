@@ -6,7 +6,7 @@ import type { SocialLinks, TestimonialStat } from "./types";
 
 export const COMPANY_NAME = "Urban Safai";
 export const COMPANY_TAGLINE = "Reliable, Daily Cleaning – Right to Your Door!";
-export const COMPANY_PHONE = "072789 22229";
+export const COMPANY_PHONE = "72789 22229";
 export const COMPANY_WHATSAPP = "917278922229";
 export const COMPANY_EMAIL = "admin@urbansafai.in";
 export const COMPANY_ADDRESS = "Urban Safai, Ludhiana, Punjab, India";

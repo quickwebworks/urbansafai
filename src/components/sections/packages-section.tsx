@@ -252,7 +252,7 @@ export default function PackagesSection() {
             className="gap-2"
             asChild
           >
-            <a href={`tel:${COMPANY_PHONE.replace(/\s/g, '')}`}>
+            <a href={`tel:+91${COMPANY_PHONE.replace(/\s/g, '')}`}>
               <Phone className="size-4" />
               Call Us for Custom Quote
             </a>

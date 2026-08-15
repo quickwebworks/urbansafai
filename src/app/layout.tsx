@@ -26,7 +26,7 @@ const siteUrl = "https://urbansafai.in";
 export const metadata: Metadata = {
   title: "Urban Safai Ludhiana | Home & Office Deep Cleaning Services",
   description:
-    "Trusted home & office cleaning services in Ludhiana. Deep cleaning, kitchen, bathroom, sofa, carpet, AC, pest control & more. Book online! Call 072789 22229",
+    "Trusted home & office cleaning services in Ludhiana. Deep cleaning, kitchen, bathroom, sofa, carpet, AC, pest control & more. Book online! Call +91 72789 22229",
   keywords: [
     "Urban Safai",
     "cleaning services Ludhiana",
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Urban Safai Ludhiana | Cleaning Services",
     description:
-      "Trusted home & office cleaning services in Ludhiana. Book online! Call 072789 22229",
+      "Trusted home & office cleaning services in Ludhiana. Book online! Call +91 72789 22229",
   },
   robots: {
     index: true,

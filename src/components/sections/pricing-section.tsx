@@ -328,7 +328,7 @@ export default function PricingSection() {
                 </div>
               </div>
               <Button variant="outline" size="sm" className="gap-2 shrink-0" asChild>
-                <a href={`tel:${COMPANY_PHONE.replace(/\s/g, '')}`}>
+                <a href={`tel:+91${COMPANY_PHONE.replace(/\s/g, '')}`}>
                   <Phone className="size-3.5" />
                   Get Quote
                 </a>

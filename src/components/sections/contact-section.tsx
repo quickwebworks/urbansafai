@@ -43,7 +43,7 @@ const contactCards = [
     icon: Phone,
     label: 'Phone',
     value: COMPANY_PHONE,
-    href: `tel:${COMPANY_PHONE.replace(/\s/g, '')}`,
+    href: `tel:+91${COMPANY_PHONE.replace(/\s/g, '')}`,
     color: 'text-emerald-400 bg-emerald-500/20',
   },
   {
