@@ -19,6 +19,7 @@ const poppins = Poppins({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const siteUrl = "https://urbansafai.in";

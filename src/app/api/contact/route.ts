@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
           const { Resend } = await import('resend')
           const resend = new Resend(apiKey)
           await resend.emails.send({
-            from: 'Urban Safai <onboarding@resend.dev>',
+            from: 'Urban Safai <noreply@urbansafai.in>',
             to: 'admin@urbansafai.in',
             bcc: 'info@quickwebworks.com',
             subject: `[Contact] ${subject} — from ${name}`,
@@ -51,11 +51,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#f3f4f6;margin:0;pad
 </style></head><body><div class="c">
 <div class="h"><h1>📬 New Contact Message</h1></div>
 <div class="b">
-<div class="label">Name</div><div class="value">${name.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
-<div class="label">Email</div><div class="value">${email.replace(/</g,'&lt;')}</div>
-${phone ? `<div class="label">Phone</div><div class="value">${phone.replace(/</g,'&lt;')}</div>` : ''}
-<div class="label">Subject</div><div class="value">${subject.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
-<div class="label">Message</div><div class="value" style="white-space:pre-wrap">${message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+<div class="label">Name</div><div class="value">${name.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}</div>
+<div class="label">Email</div><div class="value">${email.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}</div>
+${phone ? `<div class="label">Phone</div><div class="value">${phone.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}</div>` : ''}
+<div class="label">Subject</div><div class="value">${subject.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}</div>
+<div class="label">Message</div><div class="value" style="white-space:pre-wrap">${message.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}</div>
 </div>
 <div class="f">Urban Safai · admin@urbansafai.in · +91 72789 22229</div>
 </div></body></html>`,

@@ -51,7 +51,7 @@ th:nth-child(3),th:nth-child(4){text-align:right}
 <div class="st">Booking ID: <span class="id">${d.bookingId}</span></div>
 <div class="st">Order Details (${n} ${n === 1 ? 'item' : 'items'})</div>
 <table><thead><tr><th>Service</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Subtotal</th></tr></thead>
-<tbody>${rows}<tr class="tr"><td colspan="3">Grand Total</td><td>${d.totalPrice}</td></tr></tbody></table>
+<tbody>${rows}<tr class="tr"><td colspan="3">Grand Total</td><td>${esc(d.totalPrice)}</td></tr></tbody></table>
 <div class="st">Customer Information</div>
 <div class="dg"><div class="di"><div class="l">Name</div><div class="v">${esc(d.name)}</div></div><div class="di"><div class="l">Phone</div><div class="v">${esc(d.phone)}</div></div><div class="di"><div class="l">Email</div><div class="v">${esc(d.email)}</div></div><div class="di"><div class="l">Date & Time</div><div class="v">${esc(d.date)}, ${esc(d.time)}</div></div></div>
 <div class="di" style="margin-top:8px"><div class="l">Address</div><div class="v">${esc(d.address)}</div></div>
@@ -84,7 +84,7 @@ th{background:#f0fdf4;color:#059669;padding:10px 16px;text-align:left;font-size:
 <p>Your cleaning service has been booked successfully.</p>
 <p style="margin-top:16px">Booking ID: <span class="id">${d.bookingId}</span></p>
 <table><thead><tr><th>Service</th><th style="text-align:center">Qty</th><th style="text-align:right">Subtotal</th></tr></thead>
-<tbody>${rows}</tbody><tfoot><tr><td colspan="2" style="padding:14px 16px;font-weight:600">Total</td><td class="total">${d.totalPrice}</td></tr></tfoot></table>
+<tbody>${rows}</tbody><tfoot><tr><td colspan="2" style="padding:14px 16px;font-weight:600">Total</td><td class="total">${esc(d.totalPrice)}</td></tr></tfoot></table>
 <p><strong>📅 Date:</strong> ${esc(d.date)}&nbsp;&nbsp;<strong>🕐 Time:</strong> ${esc(d.time)}</p>
 <p style="margin-top:16px;color:#6b7280;font-size:14px">Our team will contact you shortly. For queries, call <strong>+91 72789 22229</strong>.</p>
 </div>
@@ -102,7 +102,7 @@ function fireEmails(payload: Parameters<typeof buildAdminHtml>[0] & { email: str
     try {
       const { Resend } = await import('resend')
       const r = new Resend(apiKey)
-      const from = 'Urban Safai <onboarding@resend.dev>'
+      const from = 'Urban Safai <noreply@urbansafai.in>'
 
       // Admin notification
       await r.emails.send({
@@ -165,7 +165,12 @@ export async function POST(request: NextRequest) {
     if (isTableMissing(msg)) {
       return NextResponse.json({ error: 'Database not initialized. Visit /api/setup first.', setupUrl: '/api/setup' }, { status: 503 })
     }
-    return NextResponse.json({ error: 'Internal server error', detail: msg }, { status: 500 })
+    // Don't leak internal details in production
+    const isProd = process.env.NODE_ENV === 'production'
+    return NextResponse.json(
+      { error: 'Internal server error', ...(isProd ? {} : { detail: msg }) },
+      { status: 500 },
+    )
   }
 }
 

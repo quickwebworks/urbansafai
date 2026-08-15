@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
 import { db } from '@/lib/db'
+import { authOptions } from '@/lib/auth'
 import { Prisma } from '@prisma/client'
 
 // PostgreSQL CREATE TABLE statements matching the Prisma schema
@@ -68,6 +70,12 @@ const TABLES: { name: string; sql: string }[] = [
 ]
 
 export async function GET() {
+  // Require admin authentication for database setup
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    return NextResponse.json({ success: false, error: 'Authentication required' }, { status: 401 })
+  }
+
   try {
     const dbUrl = process.env.DATABASE_URL
     if (!dbUrl) {

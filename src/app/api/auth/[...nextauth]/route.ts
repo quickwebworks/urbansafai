@@ -1,12 +1,9 @@
 import NextAuth from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
-// Ensure NEXTAUTH_SECRET is available
+// Fail fast if NEXTAUTH_SECRET is not set — never use a fallback
 if (!process.env.NEXTAUTH_SECRET) {
-  process.env.NEXTAUTH_SECRET = 'fallback-secret-change-in-production'
-}
-if (!process.env.NEXTAUTH_URL) {
-  process.env.NEXTAUTH_URL = process.env.VERCEL_URL || 'https://urbansafai.in'
+  throw new Error('NEXTAUTH_SECRET environment variable is required')
 }
 
 const handler = NextAuth(authOptions)

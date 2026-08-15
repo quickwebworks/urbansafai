@@ -1,14 +1,25 @@
+# Block sensitive paths from all crawlers
+User-agent: *
+Disallow: /admin
+Disallow: /api
+Allow: /
+
+# Search engine crawlers
 User-agent: Googlebot
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: Bingbot
 Allow: /
+Disallow: /admin
+Disallow: /api
 
+# Social media preview crawlers (need access to all pages for OG tags)
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+Sitemap: https://urbansafai.in/sitemap.xml

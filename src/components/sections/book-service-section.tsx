@@ -27,8 +27,26 @@ import {
   CircleCheck,
   Copy,
   CheckCheck,
+  Bath,
+  BedDouble,
+  Bug,
+  Building,
+  Building2,
+  Castle,
+  ChefHat,
+  Droplets,
+  HardHat,
+  LogIn,
+  LogOut,
+  Refrigerator,
+  ScanSearch,
+  ShieldCheck,
+  Snowflake,
+  Sofa,
+  Square,
+  Store,
+  WashingMachine,
 } from 'lucide-react'
-import * as LucideIcons from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -73,7 +91,13 @@ function formatPrice(num: number): string {
   return `₹${num.toLocaleString('en-IN')}`
 }
 
-/** Render a lucide icon by name */
+/** Static icon map — avoids barrel import that kills tree-shaking */
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Bath, BedDouble, Bug, Building, Building2, Castle, ChefHat, Droplets, HardHat,
+  Home, LogIn, LogOut, Refrigerator, ScanSearch, ShieldCheck, Snowflake,
+  Sofa, Square, Store, WashingMachine, Sparkles,
+}
+
 function ServiceIcon({
   name,
   className,
@@ -81,10 +105,7 @@ function ServiceIcon({
   name: string
   className?: string
 }) {
-  const IconComponent =
-    (LucideIcons as Record<string, React.ComponentType<{ className?: string }>>)[
-      name
-    ] ?? LucideIcons.Sparkles
+  const IconComponent = ICON_MAP[name] ?? Sparkles
   return <IconComponent className={className} />
 }
 
