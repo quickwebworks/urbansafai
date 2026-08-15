@@ -281,7 +281,7 @@ export default function BookServiceSection() {
       const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.error || 'Booking failed')
+        throw new Error(data.detail || data.error || 'Booking failed')
       }
 
       // Show full-screen success
