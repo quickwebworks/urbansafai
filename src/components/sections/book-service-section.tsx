@@ -132,7 +132,14 @@ export default function BookServiceSection() {
   const [direction, setDirection] = useState(0)
   const [selectedItems, setSelectedItems] = useState<BookingItem[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [bookingSuccess, setBookingSuccess] = useState<{ bookingId: string; name: string } | null>(null)
+  const [bookingSuccess, setBookingSuccess] = useState<{
+    bookingId: string
+    name: string
+    items: BookingItem[]
+    date: string
+    time: string
+    totalPrice: string
+  } | null>(null)
   const [copied, setCopied] = useState(false)
 
   const form = useForm<DetailsFormValues>({
@@ -284,8 +291,15 @@ export default function BookServiceSection() {
         throw new Error(data.detail || data.error || 'Booking failed')
       }
 
-      // Show full-screen success
-      setBookingSuccess({ bookingId: data.bookingId, name: values.name })
+      // Show full-screen success with all details
+      setBookingSuccess({
+        bookingId: data.bookingId,
+        name: values.name,
+        items: selectedItems,
+        date: values.date,
+        time: values.time,
+        totalPrice: totalPriceStr,
+      })
 
       // Reset form data (but keep success visible)
       setSelectedItems([])
@@ -314,101 +328,163 @@ export default function BookServiceSection() {
 
   // ── Render ──
 
-  // Full-screen success overlay
+  // ── Full-screen booking confirmation overlay ──
   if (bookingSuccess) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center px-4 py-12 bg-gradient-to-b from-emerald-500/10 to-background">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-sm px-4 py-8 overflow-y-auto">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="max-w-lg w-full"
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full max-w-md"
         >
-          <div className="rounded-2xl border border-emerald-500/30 bg-[#111111] p-8 sm:p-12 text-center shadow-2xl shadow-emerald-500/10">
-            {/* Success icon */}
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-              className="w-20 h-20 rounded-full bg-emerald-500/15 border-2 border-emerald-500/40 flex items-center justify-center mx-auto mb-6"
-            >
-              <CircleCheck className="w-10 h-10 text-emerald-400" />
-            </motion.div>
+          <div className="rounded-3xl border border-emerald-500/20 bg-card p-8 sm:p-10 text-center shadow-2xl shadow-emerald-900/10">
+
+            {/* Animated success checkmark with pulse ring */}
+            <div className="relative w-24 h-24 mx-auto mb-6">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: [0, 1.3, 1] }}
+                transition={{ delay: 0.2, duration: 0.6, ease: 'easeOut' }}
+                className="absolute inset-0 rounded-full bg-emerald-500/10"
+              />
+              <motion.div
+                initial={{ scale: 0, opacity: 0.6 }}
+                animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
+                transition={{ delay: 0.5, duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+                className="absolute inset-0 rounded-full border-2 border-emerald-500/30"
+              />
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.3, type: 'spring', stiffness: 180, damping: 12 }}
+                className="relative w-24 h-24 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.6, type: 'spring', stiffness: 200 }}
+                >
+                  <Check className="w-12 h-12 text-white" strokeWidth={3} />
+                </motion.div>
+              </motion.div>
+            </div>
 
             {/* Heading */}
             <motion.h2
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-2xl sm:text-3xl font-bold text-white mb-2"
+              transition={{ delay: 0.5 }}
+              className="text-2xl sm:text-3xl font-bold text-foreground mb-2"
             >
               Booking Confirmed!
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-gray-400 text-sm sm:text-base mb-8"
+              transition={{ delay: 0.6 }}
+              className="text-muted-foreground text-sm sm:text-base mb-6"
             >
-              Thank you, <span className="text-white font-medium">{bookingSuccess.name}</span>! We will contact you shortly to confirm your booking.
+              Thank you, <span className="font-semibold text-foreground">{bookingSuccess.name}</span>! Our team will reach out shortly.
             </motion.p>
 
-            {/* Booking ID Card */}
+            {/* Booking ID — prominent */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="bg-white/5 border border-white/10 rounded-xl p-5 mb-6"
+              transition={{ delay: 0.7 }}
+              className="rounded-2xl bg-emerald-500/5 border border-emerald-500/20 p-5 mb-5"
             >
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Your Booking ID</p>
-              <div className="flex items-center justify-center gap-3">
-                <span className="text-xl sm:text-2xl font-mono font-bold text-emerald-400 tracking-wide">
-                  {bookingSuccess.bookingId}
-                </span>
+              <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-2">Booking Reference ID</p>
+              <div className="flex items-center justify-center gap-2">
+                <code className="text-lg sm:text-2xl font-mono font-bold text-foreground tracking-wider">
+                  {bookingSuccess.bookingId.slice(0, 8).toUpperCase()}
+                </code>
                 <button
                   onClick={copyBookingId}
-                  className="p-2 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
-                  title="Copy Booking ID"
+                  className="p-2 rounded-lg hover:bg-emerald-500/10 text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 transition-all"
+                  title="Copy full Booking ID"
                 >
-                  {copied ? <CheckCheck className="size-4 text-emerald-400" /> : <Copy className="size-4" />}
+                  {copied ? <CheckCheck className="size-4 text-emerald-600 dark:text-emerald-400" /> : <Copy className="size-4" />}
                 </button>
               </div>
-              <p className="text-gray-500 text-xs mt-2">Save this ID to track your booking status</p>
+              <p className="text-xs text-muted-foreground mt-1.5">Full ID: <span className="font-mono opacity-60">{bookingSuccess.bookingId}</span></p>
             </motion.div>
 
-            {/* What's next */}
+            {/* Order summary mini-card */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="text-left bg-white/[0.02] rounded-xl p-4 mb-8"
+              transition={{ delay: 0.8 }}
+              className="rounded-xl bg-muted/50 border border-border p-4 mb-5 text-left space-y-3"
             >
-              <p className="text-white text-sm font-medium mb-3">What happens next?</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Order Summary</p>
+
+              {/* Services list */}
+              <div className="space-y-1.5">
+                {bookingSuccess.items.map((item, i) => (
+                  <div key={i} className="flex justify-between items-center text-sm">
+                    <span className="text-muted-foreground truncate mr-2">
+                      {item.serviceName} × {item.quantity}
+                    </span>
+                    <span className="font-medium text-foreground whitespace-nowrap">{item.subtotal}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border-t border-border pt-2 flex justify-between items-center">
+                <span className="text-sm font-semibold text-foreground">Total</span>
+                <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400">{bookingSuccess.totalPrice}</span>
+              </div>
+
+              <div className="flex gap-4 pt-1 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1"><Calendar className="size-3" />{bookingSuccess.date}</span>
+                <span className="flex items-center gap-1"><Clock className="size-3" />{bookingSuccess.time}</span>
+              </div>
+            </motion.div>
+
+            {/* What happens next */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+              className="text-left rounded-xl bg-muted/30 p-4 mb-6"
+            >
+              <p className="text-sm font-semibold text-foreground mb-3">What happens next?</p>
               <div className="space-y-2.5">
                 <div className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5"><span className="text-emerald-400 text-xs font-bold">1</span></div>
-                  <p className="text-gray-400 text-sm">Our team will call you to confirm the date & time</p>
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/15 flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">1</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">Our team will call you to confirm the date & time</p>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5"><span className="text-emerald-400 text-xs font-bold">2</span></div>
-                  <p className="text-gray-400 text-sm">A confirmation email will be sent to your email</p>
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/15 flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">2</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">A confirmation email will be sent to your email</p>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5"><span className="text-emerald-400 text-xs font-bold">3</span></div>
-                  <p className="text-gray-400 text-sm">Our cleaning team arrives at your doorstep on schedule</p>
+                  <div className="w-5 h-5 rounded-full bg-emerald-500/15 flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">3</span>
+                  </div>
+                  <p className="text-muted-foreground text-sm">Our cleaning team arrives at your doorstep on schedule</p>
                 </div>
               </div>
             </motion.div>
 
             {/* Done button */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.0 }}
             >
               <Button
-                onClick={() => setBookingSuccess(null)}
-                className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm transition-colors cursor-pointer"
+                onClick={() => {
+                  setBookingSuccess(null)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }}
+                className="w-full h-12 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition-all cursor-pointer shadow-lg shadow-emerald-600/20"
               >
                 Done
               </Button>
