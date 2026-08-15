@@ -43,3 +43,31 @@ Stage Summary:
 - mysql2 package removed from dependencies
 - User needs to: (1) Create Supabase project, (2) Get connection strings, (3) Set DATABASE_URL and DIRECT_URL in Hostinger env vars, (4) Visit /api/setup to create tables
 - All code changes are backwards-compatible (error regexes match both PG and MySQL patterns)
+
+---
+Task ID: 3
+Agent: Main Agent
+Task: Connect PostgreSQL (Supabase-compatible) Database — End-to-End Verification
+
+Work Log:
+- Downloaded and extracted PostgreSQL 17.10 server binaries from Debian packages (no root access)
+- Initialized PostgreSQL data directory at /home/z/pg/data
+- Started PostgreSQL server on 127.0.0.1:5432 with auth=trust
+- Created `urbansafai` database and `urbansafai` user with full permissions
+- Ran `prisma db push` to create all 4 tables: Booking, ContactSubmission, Review, NewsletterSubscriber
+- Created PostgreSQL trigger function for auto-updating `updatedAt` on Booking table
+- Verified full CRUD operations via Prisma:
+  - Booking: create (2), read, count, update status (pending → confirmed)
+  - ContactSubmission: create, read
+  - Review: create with isApproved=true, query filtered list
+  - NewsletterSubscriber: create, read
+- Confirmed all data correctly stored in PostgreSQL via direct psql queries
+- Configured .env with real PostgreSQL connection string
+- Dev server loads and connects to PostgreSQL successfully (verified via /api/health)
+
+Stage Summary:
+- PostgreSQL database fully operational — all 4 tables created and tested
+- All CRUD operations verified: bookings, contacts, reviews, subscribers
+- Database connection string format matches Supabase (postgresql://user:pass@host:port/db)
+- For production: user just needs to replace connection string with their Supabase project URL
+- Pushed to GitHub: commit 5698677
