@@ -71,3 +71,32 @@ Stage Summary:
 - Database connection string format matches Supabase (postgresql://user:pass@host:port/db)
 - For production: user just needs to replace connection string with their Supabase project URL
 - Pushed to GitHub: commit 5698677
+
+---
+Task ID: 4
+Agent: Main Agent
+Task: Connect to User's Supabase Cloud Database
+
+Work Log:
+- User provided Supabase credentials (project ref: aggfochnqxkssqfidowf, region: ap-south-1 Mumbai)
+- Initial direct connection (db.xxx.supabase.co:5432) failed — free tier only has IPv6
+- Performed DNS lookup: confirmed AAAA record (IPv6 only) for direct, A records for pooler
+- Discovered correct IPv4 pooler: aws-0-ap-south-1.pooler.supabase.com
+- Configured: DATABASE_URL (port 6543 pgbouncer) and DIRECT_URL (port 5432 session mode) via pooler
+- Ran `prisma db push` — all 4 tables created on Supabase cloud in 4.16s
+- Full CRUD test PASSED on Supabase cloud:
+  - Booking: create, update status (pending→confirmed), delete
+  - ContactSubmission: create, delete
+  - Review: create with isApproved=true, delete
+  - All counts verified, test data cleaned up
+- Dev server /api/health confirmed DATABASE_URL connected (returned true)
+- Updated .env.example with correct pooler format and IPv4/IPv6 guidance for free tier
+
+Stage Summary:
+- Supabase cloud database LIVE and operational
+- Region: ap-south-1 (Mumbai), Project: aggfochnqxkssqfidowf
+- Tables: Booking, ContactSubmission, Review, NewsletterSubscriber — all on Supabase
+- Connection uses Supavisor pooler (IPv4 compatible) — works on Hostinger
+- User's Hostinger env vars needed:
+  - DATABASE_URL=postgresql://postgres.aggfochnqxkssqfidowf:[password]@aws-0-ap-south-1.pooler.supabase.com:5432/postgres
+  - DIRECT_URL=postgresql://postgres.aggfochnqxkssqfidowf:[password]@aws-0-ap-south-1.pooler.supabase.com:6543/postgres
